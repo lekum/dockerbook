@@ -1,0 +1,25 @@
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.ssh.insert_key = false
+
+    config.vm.provision "ansible" do |ansible|
+        ansible.playbook = "playbook.yml"
+    end
+
+    config.vm.provider :virtualbox do |vb|
+        vb.customize ["modifyvm", :id, "--memory", "512"]
+    end
+
+    config.vm.define "smoker" do |server|
+        server.vm.hostname = "smoker"
+        server.vm.box = "ubuntu/trusty64"
+        server.vm.network :private_network, ip: "10.0.0.125"
+    end
+
+    config.vm.define "joker" do |server|
+        server.vm.hostname = "joker"
+        server.vm.box = "ubuntu/trusty64"
+        server.vm.network :private_network, ip: "10.0.0.135"
+    end
+
+end

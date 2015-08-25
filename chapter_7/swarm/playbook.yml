@@ -1,0 +1,13 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+
+    - name: Install curl and update cache
+      apt: name=curl update_cache=yes
+
+    - name: Run the docker installation script
+      shell: curl -sSl https://get.docker.com/ | sh
+
+    - name: Put vagrant into "docker" group
+      user: name=vagrant groups=docker append=yes
