@@ -11,3 +11,9 @@
 
     - name: Put vagrant into "docker" group
       user: name=vagrant groups=docker append=yes
+
+    - name: Change the docker daemon dns settings
+      lineinfile: dest=/etc/default/docker regexp=#DOCKER_OPTS line="DOCKER_OPTS="-H tcp://0.0.0.0:2375"
+
+    - name: Make sure service docker is restarted
+      service: name=docker state=restarted
